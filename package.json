@@ -1,0 +1,15 @@
+{
+  "name": "thessa",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@10.12.4",
+  "scripts": {
+    "dev": "pnpm --filter @thessa/web dev",
+    "build": "pnpm --filter @thessa/web build",
+    "preview": "pnpm --filter @thessa/web preview",
+    "check": "pnpm --filter @thessa/diagram-core typecheck && pnpm --filter @thessa/web typecheck",
+    "tauri:dev": "pnpm --filter @thessa/web build && pnpm --filter @thessa/desktop tauri:dev",
+    "tauri:build": "pnpm --filter @thessa/web build && pnpm --filter @thessa/desktop tauri:build"
+  },
+  "devDependencies": { "typescript": "^5.8.3" }
+}
