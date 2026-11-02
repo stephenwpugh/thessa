@@ -37,6 +37,7 @@ pnpm tauri:dev
 - [Architecture](./docs/ARCHITECTURE.md)
 - [Roadmap](./docs/ROADMAP.md)
 - [Release and versioning policy](./docs/RELEASES.md)
+- [Contributing](./CONTRIBUTING.md)
 - [Changelog](./CHANGELOG.md)
 
 ## Downloads

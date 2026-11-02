@@ -1,6 +1,6 @@
 [package]
 name = "thessa"
-version = "0.1.0"
+version = "0.2.0"
 description = "Thessa Mermaid editor"
 authors = ["Stephen Pugh"]
 edition = "2021"
