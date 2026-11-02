@@ -120,11 +120,7 @@ jobs:
           app_path=apps/desktop/src-tauri/target/aarch64-apple-darwin/release/bundle/macos/Thessa.app
           dmg_path=release-assets/Thessa_${{ needs.prepare.outputs.tag }}_aarch64.dmg
           mkdir -p release-assets
-          if diskutil image create from --help >/dev/null 2>&1; then
-            diskutil image create from --format UDZO --volumeName Thessa "$app_path" "$dmg_path"
-          else
-            hdiutil create -volname Thessa -srcfolder "$app_path" -ov -format UDZO "$dmg_path"
-          fi
+          hdiutil create -volname Thessa -srcfolder "$app_path" -ov -format UDZO "$dmg_path"
       - name: Generate checksums
         run: |
           cd release-assets
