@@ -75,7 +75,7 @@ jobs:
 
   validate:
     needs: [prepare, tag]
-    if: needs.prepare.result == 'success' && (needs.tag.result == 'success' || needs.tag.result == 'skipped')
+    if: always() && needs.prepare.result == 'success' && (needs.tag.result == 'success' || needs.tag.result == 'skipped')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
