@@ -4,8 +4,8 @@
   "version": "0.1.0",
   "identifier": "com.stephenpugh.thessa",
   "build": {
-    "beforeDevCommand": "pnpm --dir ../../web dev --host 0.0.0.0",
-    "beforeBuildCommand": "pnpm --dir ../../web build",
+    "beforeDevCommand": "pnpm --dir ../web dev --host 0.0.0.0",
+    "beforeBuildCommand": "pnpm --dir ../web build",
     "devUrl": "http://localhost:5173",
     "frontendDist": "../../web/dist"
   },
@@ -13,5 +13,5 @@
     "windows": [{ "title": "Thessa", "width": 1280, "height": 820, "minWidth": 900, "minHeight": 600 }],
     "security": { "csp": "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-eval'" }
   },
-  "bundle": { "active": true, "targets": "all", "icon": [] }
+  "bundle": { "active": true, "targets": "all", "icon": ["icons/icon.png"] }
 }

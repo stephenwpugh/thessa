@@ -2,11 +2,17 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, "feat/**", "fix/**", "release/**"]
   pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  web:
+  quality:
+    name: quality
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,5 +24,23 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm check
+      - run: pnpm --filter @thessa/diagram-core typecheck
+      - run: pnpm --filter @thessa/web typecheck
       - run: pnpm build
+      - run: pnpm release:check
+
+  desktop:
+    name: desktop-check
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.12.4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - uses: dtolnay/rust-toolchain@stable
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @thessa/desktop tauri:check

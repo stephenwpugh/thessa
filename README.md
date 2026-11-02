@@ -36,6 +36,12 @@ pnpm tauri:dev
 
 - [Architecture](./docs/ARCHITECTURE.md)
 - [Roadmap](./docs/ROADMAP.md)
+- [Release and versioning policy](./docs/RELEASES.md)
+- [Changelog](./CHANGELOG.md)
+
+## Downloads
+
+Published desktop installers are attached to each [GitHub Release](https://github.com/stephenwpugh/thessa/releases). The first supported installer is an unsigned Apple Silicon (`arm64`) `.dmg`; macOS may require the user to explicitly allow it in Privacy & Security until code signing and notarization are configured.
 
 ## License
 
