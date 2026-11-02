@@ -10,11 +10,11 @@
 
 ## 0.2 — editor foundations
 
-- [ ] CodeMirror 6 source editor
-- [ ] Source-range mapping and text selection
-- [ ] Zoom/pan preview controls
-- [ ] Export SVG and copy source
-- [ ] Local file open/save
+- [x] CodeMirror 6 source editor
+- [x] Source-range mapping and text selection
+- [x] Zoom/pan preview controls
+- [x] Export SVG and copy source
+- [x] Local file open/save
 
 ## 0.3 — structured editing
 
