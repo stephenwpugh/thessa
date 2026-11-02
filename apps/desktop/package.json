@@ -1,6 +1,6 @@
 {
   "name": "@thessa/desktop",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": { "tauri:dev": "tauri dev", "tauri:build": "tauri build", "tauri:check": "cargo check --manifest-path src-tauri/Cargo.toml" },
   "devDependencies": { "@tauri-apps/cli": "^2.5.0" }
