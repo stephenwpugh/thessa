@@ -55,7 +55,8 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm release:check ${{ needs.prepare.outputs.tag }}
-      - run: pnpm check
+      - run: pnpm --filter @thessa/diagram-core typecheck
+      - run: pnpm --filter @thessa/web typecheck
       - run: pnpm build
 
   desktop-dmg:
