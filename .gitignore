@@ -1,8 +1,10 @@
 node_modules
 dist
+.turbo
 .DS_Store
 .env
 .env.*
 !.env.example
 apps/desktop/src-tauri/target
 apps/desktop/src-tauri/gen
+apps/web/tsconfig.tsbuildinfo
