@@ -3,6 +3,9 @@ name: Release
 on:
   push:
     tags: ["v*", "web-v*", "desktop-v*"]
+  pull_request:
+    branches: [main]
+    types: [closed]
   workflow_dispatch:
     inputs:
       tag:
@@ -19,6 +22,9 @@ concurrency:
 
 jobs:
   prepare:
+    if: >-
+      github.event_name != 'pull_request' ||
+      (github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/'))
     runs-on: ubuntu-latest
     outputs:
       tag: ${{ steps.release.outputs.tag }}
@@ -27,8 +33,9 @@ jobs:
     steps:
       - id: release
         env:
-          RELEASE_TAG: ${{ github.event.inputs.tag || github.ref_name }}
+          RELEASE_TAG: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.ref || github.event.inputs.tag || github.ref_name }}
         run: |
+          RELEASE_TAG="${RELEASE_TAG#release/}"
           case "$RELEASE_TAG" in
             web-v*) component=web; build_desktop=false ;;
             desktop-v*) component=desktop; build_desktop=true ;;
@@ -39,8 +46,36 @@ jobs:
           echo "component=$component" >> "$GITHUB_OUTPUT"
           echo "build_desktop=$build_desktop" >> "$GITHUB_OUTPUT"
 
-  validate:
+  tag:
     needs: prepare
+    if: github.event_name == 'pull_request' && needs.prepare.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
+          fetch-depth: 0
+      - name: Create the immutable release tag
+        env:
+          RELEASE_TAG: ${{ needs.prepare.outputs.tag }}
+          MERGE_SHA: ${{ github.event.pull_request.merge_commit_sha }}
+        run: |
+          git fetch --tags origin
+          existing="$(git rev-list -n 1 "$RELEASE_TAG" 2>/dev/null || true)"
+          if [ -n "$existing" ]; then
+            if [ "$existing" != "$MERGE_SHA" ]; then
+              echo "Refusing to reuse $RELEASE_TAG for a different commit." >&2
+              exit 1
+            fi
+            echo "$RELEASE_TAG already points at this merge commit."
+            exit 0
+          fi
+          git tag --annotate "$RELEASE_TAG" "$MERGE_SHA" --message "Release $RELEASE_TAG"
+          git push origin "$RELEASE_TAG"
+
+  validate:
+    needs: [prepare, tag]
+    if: always() && needs.prepare.result == 'success' && (needs.tag.result == 'success' || needs.tag.result == 'skipped')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -85,11 +120,7 @@ jobs:
           app_path=apps/desktop/src-tauri/target/aarch64-apple-darwin/release/bundle/macos/Thessa.app
           dmg_path=release-assets/Thessa_${{ needs.prepare.outputs.tag }}_aarch64.dmg
           mkdir -p release-assets
-          if diskutil image create from --help >/dev/null 2>&1; then
-            diskutil image create from --format UDZO --volumeName Thessa "$app_path" "$dmg_path"
-          else
-            hdiutil create -volname Thessa -srcfolder "$app_path" -ov -format UDZO "$dmg_path"
-          fi
+          hdiutil create -volname Thessa -srcfolder "$app_path" -ov -format UDZO "$dmg_path"
       - name: Generate checksums
         run: |
           cd release-assets

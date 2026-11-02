@@ -28,8 +28,8 @@ Patch releases may vary by distribution. Add `## Web` or `## Desktop` below the 
 ## Cutting a release
 
 1. Create `release/vX.Y.Z`, update the relevant manifests and `CHANGELOG.md`, and run `pnpm release:check`.
-2. Merge the reviewed release branch into `main` after CI passes.
-3. Tag the merge commit with `vX.Y.Z`, `web-vX.Y.Z`, or `desktop-vX.Y.Z`, and push the tag.
-4. GitHub Actions validates the version, creates the GitHub Release, and for paired/desktop releases builds an Apple Silicon `.dmg` and its checksum.
+2. Merge the reviewed release branch into `main` after CI passes. The Release workflow recognizes a merged `release/vX.Y.Z` branch, tags that merge commit with `vX.Y.Z`, and starts the release automatically.
+3. For a component release, tag the merge commit with `web-vX.Y.Z` or `desktop-vX.Y.Z`, then push the tag. Paired release tags can also be pushed manually when needed.
+4. GitHub Actions validates the version, creates the GitHub Release, and for paired/desktop releases builds an Apple Silicon `.dmg` and its checksum. A release tag is immutable: the workflow refuses to point an existing tag at a different commit.
 
 The `Release` workflow can also be run manually with the exact tag after it has been pushed. Desktop builds are intentionally unsigned until `APPLE_CERTIFICATE`, `APPLE_CERTIFICATE_PASSWORD`, `KEYCHAIN_PASSWORD`, `APPLE_API_ISSUER`, `APPLE_API_KEY`, and `APPLE_API_KEY_ID` are configured and a notarization step is added. The attached unsigned DMG remains a usable first download.
