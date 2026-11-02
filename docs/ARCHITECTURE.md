@@ -13,7 +13,7 @@ apps/
 
 packages/
   diagram-core/           Mermaid parsing, rendering, diagnostics, metadata
-  source-editor/          CodeMirror integration (next)
+  source-editor/          CodeMirror integration (in web app)
   editor-canvas/          Interactive graph adapter (next)
   ai-mcp/                 MCP operations and approval policy (next)
 
