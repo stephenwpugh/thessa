@@ -96,7 +96,7 @@ jobs:
 
   desktop-dmg:
     needs: [prepare, validate]
-    if: needs.prepare.outputs.build_desktop == 'true'
+    if: always() && needs.prepare.result == 'success' && needs.validate.result == 'success' && needs.prepare.outputs.build_desktop == 'true'
     runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
