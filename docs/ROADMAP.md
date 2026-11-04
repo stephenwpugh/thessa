@@ -18,11 +18,11 @@
 
 ## 0.3 — structured editing
 
-- [ ] Internal node/edge model
-- [ ] Flowchart canvas with draggable nodes
-- [ ] Connect handles and edge labels
-- [ ] Mermaid serializer for supported flowcharts
-- [ ] Sidecar layout metadata
+- [x] Internal node/edge model
+- [x] Flowchart canvas with draggable nodes
+- [x] Connect handles and edge labels
+- [x] Mermaid serializer for supported flowcharts
+- [x] Sidecar layout metadata
 
 ## 0.4 — AI and collaboration
 

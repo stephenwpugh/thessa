@@ -2,6 +2,14 @@
 
 All notable changes to Thessa are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Added
+
+- Structured editor for the supported Mermaid flowchart subset, including a node/edge model and stable Mermaid serialization.
+- Draggable flowchart canvas nodes, connect handles, and editable edge labels.
+- Importable and exportable JSON sidecar files for canvas layout metadata.
+
 ## [0.2.0] - 2026-11-02
 
 ### Added
