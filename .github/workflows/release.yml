@@ -97,7 +97,7 @@ jobs:
   desktop-dmg:
     needs: [prepare, validate]
     if: always() && needs.prepare.result == 'success' && needs.validate.result == 'success' && needs.prepare.outputs.build_desktop == 'true'
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
         with:
@@ -117,10 +117,9 @@ jobs:
         run: pnpm --filter @thessa/desktop exec tauri build --bundles app --target aarch64-apple-darwin
       - name: Package Apple Silicon DMG
         run: |
-          app_path=apps/desktop/src-tauri/target/aarch64-apple-darwin/release/bundle/macos/Thessa.app
-          dmg_path=release-assets/Thessa_${{ needs.prepare.outputs.tag }}_aarch64.dmg
-          mkdir -p release-assets
-          hdiutil create -volname Thessa -srcfolder "$app_path" -ov -format UDZO "$dmg_path"
+          scripts/package-macos-dmg.sh \
+            apps/desktop/src-tauri/target/aarch64-apple-darwin/release/bundle/macos/Thessa.app \
+            "release-assets/Thessa_${{ needs.prepare.outputs.tag }}_aarch64.dmg"
       - name: Generate checksums
         run: |
           cd release-assets

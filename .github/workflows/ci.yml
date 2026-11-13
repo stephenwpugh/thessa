@@ -31,7 +31,7 @@ jobs:
 
   desktop:
     name: desktop-check
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -42,5 +42,20 @@ jobs:
           node-version: 22
           cache: pnpm
       - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @thessa/desktop tauri:check
+      - name: Build Apple Silicon app
+        run: pnpm --filter @thessa/desktop exec tauri build --bundles app --target aarch64-apple-darwin
+      - name: Package and verify DMG
+        run: |
+          scripts/package-macos-dmg.sh apps/desktop/src-tauri/target/aarch64-apple-darwin/release/bundle/macos/Thessa.app ci-assets/Thessa_aarch64.dmg
+          cd ci-assets
+          shasum -a 256 *.dmg > SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        with:
+          name: thessa-macos-arm64-${{ github.sha }}
+          path: ci-assets/
+          if-no-files-found: error
